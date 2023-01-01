@@ -12,34 +12,43 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Title and Icon
 pygame.display.set_caption("Space Invaders")
-icon = pygame.image.load('assets/spaceships/logo.png')
+icon = pygame.image.load('assets/imgs/icon/logo.png')
 pygame.display.set_icon(icon)
+
+# Load Images
+PLAYER_SPACE_SHIP = pygame.image.load('assets/imgs/spaceships/spaceship2.png')
+ENEMY_SPACE_SHIP = pygame.image.load('assets/imgs/spaceships/enemy.png')
+LASER = pygame.image.load('assets/imgs/laser/laser_32.png')
+BACKGROUND = pygame.image.load('assets/imgs/bg/bg_black.png')
 
 
 class SpaceShip():
-    def __init__(self, x, y, energy, imagepath):
+    def __init__(self, x, y, energy, image):
         self.x = x
         self.y = y
         self.energy = energy
-        self.imagepath = imagepath
+        self.image = image
 
     def draw_space_ship(self):
         DEFAULT_IMAGE_SIZE = (64, 64)
-        spaceship_img = pygame.image.load(self.imagepath)
         spaceship_img = pygame.transform.scale(
-            spaceship_img, DEFAULT_IMAGE_SIZE)
+            self.image, DEFAULT_IMAGE_SIZE)
         screen.blit(spaceship_img, (self.x, self.y))
 
 
 # Game Loop
-running = True
-while running:
-    player = SpaceShip(370, 480, 100, 'assets/spaceships/spaceship2.png')
-    screen.fill((0, 0, 0))
+def main():
+    running = True
+    FPS = 60
+    clock = pygame.time.Clock()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    while running:
+        clock.tick(FPS)
 
-    player.draw_space_ship()
-    pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+
+if __name__ == "__main__":
+    main()
