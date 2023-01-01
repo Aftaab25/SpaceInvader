@@ -3,10 +3,11 @@ import pygame
 # Initialize the pygame
 pygame.init()
 
-# Game Screen
+# Game Constants
 WIDTH = 800
 HEIGHT = 600
 
+# Game Screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Title and Icon
@@ -33,12 +34,12 @@ class SpaceShip():
 # Game Loop
 running = True
 while running:
+    player = SpaceShip(370, 480, 100, 'assets/spaceships/spaceship2.png')
     screen.fill((0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    player = SpaceShip(370, 480, 100, 'assets/spaceships/spaceship2.png')
     player.draw_space_ship()
     pygame.display.update()
