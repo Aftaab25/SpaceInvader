@@ -40,6 +40,8 @@ def main():
     FPS = 60
     level = 0
     lives = 5
+    lost = False
+    lost_count = 0
     enemies = []
     wave_length = 0
 
@@ -47,6 +49,9 @@ def main():
     # Use this for custom font
     main_font = pygame.font.Font(
         "/usr/share/fonts/JetBrainsMono-2.242/fonts/ttf/JetBrainsMono-Medium.ttf", 24)
+    lost_font = pygame.font.Font(
+        "/usr/share/fonts/JetBrainsMono-2.242/fonts/ttf/JetBrainsMono-Medium.ttf", 32)
+
     player = SpaceShip(WIDTH//2 - SIZE_X//2, HEIGHT -
                        100, 100, PLAYER_SPACE_SHIP)
 
@@ -66,10 +71,24 @@ def main():
         screen.blit(level_label, (10, 10))
         screen.blit(lives_label, (WIDTH - lives_label.get_width() - 10, 10))
 
+        if lost:
+            lost_label = lost_font.render(f"You Lost", 1, (255, 255, 255))
+            screen.blit(lost_label, (WIDTH//2 - lost_label.get_width()//2, HEIGHT//2))
+
         pygame.display.update()
 
     while running:
         clock.tick(FPS)
+        redraw_window()
+        if lives <= 0 or player.energy <= 0:
+            lost = True
+            lost_count += 1
+
+        if lost:
+            if lost_count > FPS * 3:
+                running = False
+            else:
+                continue
 
         if len(enemies) == 0:
             level += 1
@@ -98,10 +117,7 @@ def main():
                 lives -= 1
                 enemies.remove(enemy)
 
-        if lives == 0:
-            running = False
-
-        redraw_window()
+        
 
 
 if __name__ == "__main__":
