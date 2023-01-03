@@ -19,3 +19,9 @@ class SpaceShip():
         spaceship_img = pygame.transform.scale(
             self.image, DEFAULT_IMAGE_SIZE)
         screen.blit(spaceship_img, (self.x, self.y))
+
+    def get_height(self):
+        return self.image.get_height()
+
+    def get_width(self):
+        return self.image.get_width()

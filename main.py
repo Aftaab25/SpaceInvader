@@ -41,7 +41,7 @@ def main():
     level = 0
     lives = 5
     enemies = []
-    wave_length = 5
+    wave_length = 0
 
     # main_font = pygame.font.SysFont("comicsans", 30)
     # Use this for custom font
@@ -49,8 +49,7 @@ def main():
         "/usr/share/fonts/JetBrainsMono-2.242/fonts/ttf/JetBrainsMono-Medium.ttf", 24)
     player = SpaceShip(WIDTH//2 - SIZE_X//2, HEIGHT -
                        100, 100, PLAYER_SPACE_SHIP)
-    # enemy = SpaceShip(WIDTH//2 - SIZE_X//2, HEIGHT -
-    #                   100, 100, ENEMY_SPACE_SHIP)
+
     clock = pygame.time.Clock()
 
     # Function to redraw window
@@ -59,14 +58,26 @@ def main():
         # Drawing Text Labels
         level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
         lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
+
+        for enemy in enemies:
+            enemy.draw_space_ship(screen)
         player.draw_space_ship(screen)
+
         screen.blit(level_label, (10, 10))
         screen.blit(lives_label, (WIDTH - lives_label.get_width() - 10, 10))
+
         pygame.display.update()
 
     while running:
         clock.tick(FPS)
-        redraw_window()
+
+        if len(enemies) == 0:
+            level += 1
+            wave_length += 5
+            for i in range(wave_length):
+                enemies.append(SpaceShip(random.randrange(
+                    50, WIDTH-50), random.randrange(-1500, -100), 20, ENEMY_SPACE_SHIP))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -80,6 +91,17 @@ def main():
             player.y -= PLAYER_VELOCITY
         if keys[pygame.K_DOWN] and player.y + PLAYER_VELOCITY + SIZE_Y < HEIGHT:
             player.y += PLAYER_VELOCITY
+
+        for enemy in enemies[:]:
+            enemy.y += ENEMY_VELOCITY
+            if enemy.y + enemy.get_height() > HEIGHT:
+                lives -= 1
+                enemies.remove(enemy)
+
+        if lives == 0:
+            running = False
+
+        redraw_window()
 
 
 if __name__ == "__main__":
