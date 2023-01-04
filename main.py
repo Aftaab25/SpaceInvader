@@ -2,6 +2,7 @@ import pygame
 import time
 import random
 
+from Laser import Laser
 from SpaceShip import SpaceShip
 
 # Initialising font
